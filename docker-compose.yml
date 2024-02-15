@@ -7,11 +7,15 @@ services:
       - "8080:80"
     volumes:
       - ./:/code
-      - ./demo/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker-symfony-demo/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker-symfony-demo/var/log/nginx/access.log:/var/log/nginx/access.log
+      - ./docker-symfony-demo/var/log/nginx/error.log:/var/log/nginx/error.log
   php:
-    build: ./demo/build
+    build: ./docker-symfony-demo/build
     volumes:
       - ./:/code
+      # - ./docker-symfony-demo/var/log/php:/var/log/php
+      # - ./docker-symfony-demo/var/log/php:/var/log/php
     depends_on:
       - nginx
   mysql:
@@ -32,5 +36,6 @@ services:
       # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
       - data:/var/lib/mysql
+      # - ./docker-symfony-demo/var/log/mysql/mysql.log:/var/log/mysql/mysql.log
 volumes:
   data: {}
