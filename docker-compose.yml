@@ -14,8 +14,10 @@ services:
     build: ./docker-symfony-demo/build
     volumes:
       - ./:/code
-      # - ./docker-symfony-demo/var/log/php:/var/log/php
-      # - ./docker-symfony-demo/var/log/php:/var/log/php
+      - ./docker-symfony-demo/conf/log.conf:/usr/local/etc/php-fpm.d/zz-log.conf
+      - .root:/var/www/html:ro
+      - ./docker-symfony-demo/conf/php.ini-development:/usr/local/etc/php/php.ini
+      - ./docker-symfony-demo/var/log/php/error_php.log:/var/log/php/php_errors.log
     depends_on:
       - nginx
   mysql:
@@ -30,12 +32,13 @@ services:
       - MYSQL_USER=damien
       - MYSQL_PASSWORD=PETITnuage-26
       - MYSQL_ALLOW_EMPTY_PASSWORD=0
-      # - MYSQL_ROOT_PASSSWORD=${MYSQL_ROOT_PASSSWORD}
-      # - MYSQL_DATABASE=${MYSQL_DATABASE}
-      # - MYSQL_USER=${MYSQL_USER}
-      # - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      # MYSQL_ROOT_PASSSWORD: ${MYSQL_ROOT_PASSSWORD}
+      # MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - data:/var/lib/mysql
-      # - ./docker-symfony-demo/var/log/mysql/mysql.log:/var/log/mysql/mysql.log
+      - ./docker-symfony-demo/conf/my.cnf:/etc/mysql/my.cnf
+      - ./docker-symfony-demo/var/log/mysql/mysql.log:/var/log/mysql/mysql.log
 volumes:
   data: {}
